@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include DataStore preferences directory -->
+    <include domain="file" path="datastore/"/>
+    
+    <!-- Exclude update APK file from backup -->
+    <exclude domain="file" path="update.apk"/>
+</full-backup-content>
