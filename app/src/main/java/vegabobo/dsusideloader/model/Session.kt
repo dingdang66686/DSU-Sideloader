@@ -8,6 +8,7 @@ import vegabobo.dsusideloader.util.OperationMode
 data class InstallationPreferences(
     var isUnmountSdCard: Boolean = false,
     var useBuiltinInstaller: Boolean = false,
+    var preserveUserdata: Boolean = false,
 )
 
 class UserSelection(

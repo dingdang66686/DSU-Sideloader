@@ -109,6 +109,7 @@ class HomeViewModel @Inject constructor(
                     return@run
                 }
                 if (isInstalled) {
+                    _uiState.update { it.copy(isDsuInstalled = true) }
                     updateInstallationCard { it.copy(installationStep = InstallationStep.DSU_ALREADY_INSTALLED) }
                     return@run
                 }
@@ -264,6 +265,7 @@ class HomeViewModel @Inject constructor(
             onCreatePartition = this::onCreatePartition,
             onInstallationStepUpdate = this::onStepUpdate,
             onInstallationSuccess = this::onRootInstallationSuccess,
+            preserveUserdata = session.preferences.preserveUserdata,
         ).invoke()
     }
 
@@ -389,6 +391,11 @@ class HomeViewModel @Inject constructor(
 
     fun onCheckUserdataCard() =
         updateUserdataCard { it.copy(isSelected = !it.isSelected, text = "") }
+
+    fun onCheckPreserveUserdata(checked: Boolean) {
+        updateUserdataCard { it.copy(preserveSelected = checked) }
+        session.preferences.preserveUserdata = checked
+    }
 
     fun updateUserdataSize(input: String) {
         val selectedSize = FilenameUtils.getDigits(input)

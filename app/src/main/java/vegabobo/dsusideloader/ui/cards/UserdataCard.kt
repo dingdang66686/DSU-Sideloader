@@ -17,15 +17,18 @@ import androidx.compose.ui.unit.sp
 import vegabobo.dsusideloader.R
 import vegabobo.dsusideloader.ui.components.CardBox
 import vegabobo.dsusideloader.ui.components.FileSelectionBox
+import vegabobo.dsusideloader.ui.components.PreferenceItem
 import vegabobo.dsusideloader.ui.screen.home.UserDataCardState
 
 @Composable
 fun UserdataCard(
     isEnabled: Boolean,
     uiState: UserDataCardState,
+    isDsuInstalled: Boolean,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     onCheckedChange: (Boolean) -> Unit = {},
+    onPreserveCheckedChange: (Boolean) -> Unit = {},
 ) {
     CardBox(
         modifier = modifier,
@@ -60,6 +63,16 @@ fun UserdataCard(
                         color = MaterialTheme.colorScheme.error,
                         lineHeight = 14.sp,
                         fontSize = 14.sp,
+                    )
+                }
+                AnimatedVisibility(visible = isDsuInstalled && !isEnabled) {
+                    PreferenceItem(
+                        title = stringResource(id = R.string.preserve_userdata),
+                        description = stringResource(id = R.string.preserve_userdata_desc),
+                        showToggle = true,
+                        isChecked = uiState.preserveSelected,
+                        isEnabled = !isEnabled,
+                        onClick = { onPreserveCheckedChange(!uiState.preserveSelected) }
                     )
                 }
             }

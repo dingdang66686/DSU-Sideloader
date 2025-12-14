@@ -128,8 +128,10 @@ fun Home(
                 UserdataCard(
                     isEnabled = uiState.isInstalling(),
                     uiState = uiState.userDataCard,
+                    isDsuInstalled = uiState.isDsuInstalled,
                     onCheckedChange = { homeViewModel.onCheckUserdataCard() },
                     onValueChange = { homeViewModel.updateUserdataSize(it) },
+                    onPreserveCheckedChange = { homeViewModel.onCheckPreserveUserdata(it) },
                 )
                 ImageSizeCard(
                     isEnabled = uiState.isInstalling(),
