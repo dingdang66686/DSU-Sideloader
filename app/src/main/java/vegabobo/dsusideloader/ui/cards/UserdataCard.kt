@@ -57,6 +57,7 @@ fun UserdataCard(
                 AnimatedVisibility(visible = !uiState.preserveSelected || !isDsuInstalled) {
                     FileSelectionBox(
                         modifier = Modifier.padding(bottom = 4.dp),
+                        // Disable input when: installing OR preserve is selected
                         isEnabled = !isEnabled && !uiState.preserveSelected,
                         isError = uiState.isError,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

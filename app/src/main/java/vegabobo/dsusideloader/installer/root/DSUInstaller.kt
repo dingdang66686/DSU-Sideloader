@@ -234,8 +234,8 @@ class DSUInstaller(
         forceStopDSU()
         startInstallation(Constants.DEFAULT_SLOT)
         
-        // Only create userdata partition if not preserving or DSU is not installed
-        if (!isInstalled || !preserveUserdata) {
+        // Only create userdata partition when preserve is disabled OR DSU is not installed
+        if (!preserveUserdata || !isInstalled) {
             installWritablePartition("userdata", userdataSize)
         }
         
