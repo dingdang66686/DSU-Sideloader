@@ -44,15 +44,27 @@ fun UserdataCard(
             exit = shrinkVertically(),
         ) {
             Column {
-                FileSelectionBox(
-                    modifier = Modifier.padding(bottom = 4.dp),
-                    isEnabled = !isEnabled,
-                    isError = uiState.isError,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    textFieldValue = uiState.text,
-                    textFieldTitle = stringResource(id = R.string.userdata_size_info),
-                    onValueChange = onValueChange,
-                )
+                AnimatedVisibility(visible = isDsuInstalled && !isEnabled) {
+                    PreferenceItem(
+                        title = stringResource(id = R.string.preserve_userdata),
+                        description = stringResource(id = R.string.preserve_userdata_desc),
+                        showToggle = true,
+                        isChecked = uiState.preserveSelected,
+                        isEnabled = !isEnabled,
+                        onClick = { onPreserveCheckedChange(!uiState.preserveSelected) }
+                    )
+                }
+                AnimatedVisibility(visible = !uiState.preserveSelected || !isDsuInstalled) {
+                    FileSelectionBox(
+                        modifier = Modifier.padding(bottom = 4.dp),
+                        isEnabled = !isEnabled && !uiState.preserveSelected,
+                        isError = uiState.isError,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        textFieldValue = uiState.text,
+                        textFieldTitle = stringResource(id = R.string.userdata_size_info),
+                        onValueChange = onValueChange,
+                    )
+                }
                 AnimatedVisibility(visible = uiState.isError) {
                     Text(
                         modifier = Modifier.padding(start = 1.dp),
@@ -63,16 +75,6 @@ fun UserdataCard(
                         color = MaterialTheme.colorScheme.error,
                         lineHeight = 14.sp,
                         fontSize = 14.sp,
-                    )
-                }
-                AnimatedVisibility(visible = isDsuInstalled && !isEnabled) {
-                    PreferenceItem(
-                        title = stringResource(id = R.string.preserve_userdata),
-                        description = stringResource(id = R.string.preserve_userdata_desc),
-                        showToggle = true,
-                        isChecked = uiState.preserveSelected,
-                        isEnabled = !isEnabled,
-                        onClick = { onPreserveCheckedChange(!uiState.preserveSelected) }
                     )
                 }
             }
