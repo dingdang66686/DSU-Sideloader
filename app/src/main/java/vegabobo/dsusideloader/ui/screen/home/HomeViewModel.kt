@@ -109,8 +109,9 @@ class HomeViewModel @Inject constructor(
                     return@run
                 }
                 if (isInstalled) {
+                    // Track DSU installation status for showing preserve option
+                    // but don't change installation step to allow normal file selection
                     _uiState.update { it.copy(isDsuInstalled = true) }
-                    updateInstallationCard { it.copy(installationStep = InstallationStep.DSU_ALREADY_INSTALLED) }
                     return@run
                 }
             }
