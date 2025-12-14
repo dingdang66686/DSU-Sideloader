@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-        <!-- Include user preferences DataStore -->
-        <include domain="file" path="datastore/user_preferences.preferences_pb"/>
-        
-        <!-- Include any other files in datastore directory -->
+        <!-- Include DataStore preferences directory -->
         <include domain="file" path="datastore/"/>
         
         <!-- Exclude update APK file from backup -->
@@ -12,10 +9,7 @@
     </cloud-backup>
     
     <device-transfer>
-        <!-- Include user preferences DataStore -->
-        <include domain="file" path="datastore/user_preferences.preferences_pb"/>
-        
-        <!-- Include any other files in datastore directory -->
+        <!-- Include DataStore preferences directory -->
         <include domain="file" path="datastore/"/>
         
         <!-- Exclude update APK file from transfer -->

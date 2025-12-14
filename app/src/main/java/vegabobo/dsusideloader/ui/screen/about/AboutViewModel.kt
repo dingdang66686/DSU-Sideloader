@@ -107,11 +107,11 @@ class AboutViewModel @Inject constructor(
                     FileOutputStream(finalFile).use { output ->
                         val buffer = ByteArray(8 * 1024)
                         var n: Int
-                        var readed: Long = 0
+                        var bytesRead: Long = 0
                         while (-1 != input.read(buffer).also { n = it }) {
-                            readed += n
+                            bytesRead += n
                             output.write(buffer, 0, n)
-                            updateUpdaterCard { it.copy(progressBar = readed.toFloat() / length.toFloat()) }
+                            updateUpdaterCard { it.copy(progressBar = bytesRead.toFloat() / length.toFloat()) }
                         }
                     }
                 }
