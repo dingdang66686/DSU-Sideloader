@@ -232,10 +232,10 @@ class DSUInstaller(
         }
         
         forceStopDSU()
+        startInstallation(Constants.DEFAULT_SLOT)
         
-        // If DSU is not installed or we're not preserving userdata, start fresh
+        // Only create userdata partition if not preserving or DSU is not installed
         if (!isInstalled || !preserveUserdata) {
-            startInstallation(Constants.DEFAULT_SLOT)
             installWritablePartition("userdata", userdataSize)
         }
         
