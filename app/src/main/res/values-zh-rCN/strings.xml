@@ -87,6 +87,8 @@
     <string name="userdata_size">DSU 用户空间大小</string>
     <string name="userdata_size_info">单位：GB</string>
     <string name="allowed_userdata_allocation">可分配用户空间大小: %1$s GB</string>
+    <string name="preserve_userdata">保留用户数据</string>
+    <string name="preserve_userdata_desc">更新 DSU 时保留现有用户数据</string>
     <!-- Image size card -->
     <string name="image_size">DSU 镜像大小</string>
     <string name="image_size_info">单位：Bytes</string>
