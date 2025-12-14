@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Include user preferences DataStore -->
+        <include domain="sharedpref" path="datastore/user_preferences.preferences_pb"/>
+        
+        <!-- Include any other shared preferences -->
+        <include domain="sharedpref" path="."/>
+        
+        <!-- Exclude update APK file from backup -->
+        <exclude domain="file" path="update.apk"/>
+    </cloud-backup>
+    
+    <device-transfer>
+        <!-- Include user preferences DataStore -->
+        <include domain="sharedpref" path="datastore/user_preferences.preferences_pb"/>
+        
+        <!-- Include any other shared preferences -->
+        <include domain="sharedpref" path="."/>
+        
+        <!-- Exclude update APK file from transfer -->
+        <exclude domain="file" path="update.apk"/>
+    </device-transfer>
+</data-extraction-rules>
