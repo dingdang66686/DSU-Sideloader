@@ -60,7 +60,7 @@ fun DsuInstalledCardContent(
     
     // Action buttons
     Column {
-        // Update/Install button
+        // First row: Clear and Update/Install buttons
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
@@ -86,7 +86,7 @@ fun DsuInstalledCardContent(
         
         Spacer(modifier = Modifier.padding(top = 8.dp))
         
-        // Reboot and Remove buttons
+        // Second row: Reboot and Discard buttons
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
