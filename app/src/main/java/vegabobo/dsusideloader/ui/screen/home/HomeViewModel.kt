@@ -90,6 +90,7 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 installationCard = InstallationCardState(),
                 sheetDisplay = SheetDisplayState.NONE,
+                isUpdatingDsu = false,
             )
         }
 
@@ -110,7 +111,13 @@ class HomeViewModel @Inject constructor(
                 }
                 if (isInstalled) {
                     // Track DSU installation status and show update UI
-                    _uiState.update { it.copy(isDsuInstalled = true) }
+                    // Set preserve userdata to true by default
+                    _uiState.update { 
+                        it.copy(
+                            isDsuInstalled = true,
+                            userDataCard = it.userDataCard.copy(preserveSelected = true)
+                        ) 
+                    }
                     updateInstallationCard { it.copy(installationStep = InstallationStep.DSU_ALREADY_INSTALLED) }
                     return@run
                 }
@@ -343,6 +350,10 @@ class HomeViewModel @Inject constructor(
             setEnable(true, true)
             Shell.cmd("reboot").exec()
         }
+    }
+
+    fun onClickUpdateDsu() {
+        _uiState.update { it.copy(isUpdatingDsu = true) }
     }
 
     fun onClickDiscardGsiAndStartInstallation() {

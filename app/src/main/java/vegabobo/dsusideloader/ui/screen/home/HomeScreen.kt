@@ -111,7 +111,9 @@ fun Home(
             if (uiState.passedInitialChecks && uiState.additionalCard == AdditionalCardState.NONE) {
                 InstallationCard(
                     uiState = uiState.installationCard,
+                    isUpdatingDsu = uiState.isUpdatingDsu,
                     onClickInstall = { homeViewModel.onClickInstall() },
+                    onClickUpdate = { homeViewModel.onClickUpdateDsu() },
                     onClickUnmountSdCardAndRetry = { homeViewModel.onClickUnmountSdCardAndRetry() },
                     onClickSetSeLinuxPermissive = { homeViewModel.onClickSetSeLinuxPermissive() },
                     onClickRetryInstallation = { homeViewModel.onClickRetryInstallation() },
