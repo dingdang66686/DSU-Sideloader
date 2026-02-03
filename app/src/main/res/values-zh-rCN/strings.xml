@@ -24,6 +24,7 @@
     <string name="file_unsupported">不支持的文件</string>
     <string name="clear">清理</string>
     <string name="install">安装</string>
+    <string name="update">更新</string>
     <!-- Installation dialog -->
     <string name="proceed_installation">是否继续安装？</string>
     <string name="proceed_installation_description">安装时将使用以下参数:</string>
