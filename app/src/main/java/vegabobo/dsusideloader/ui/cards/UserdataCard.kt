@@ -31,7 +31,8 @@ fun UserdataCard(
     onPreserveCheckedChange: (Boolean) -> Unit = {},
 ) {
     // When DSU is installed and not currently installing, show simplified preserve UI
-    // isEnabled = true means installation is in progress
+    // Note: isEnabled parameter indicates installation is in progress (when true)
+    // So !isEnabled means installation is NOT in progress
     if (isDsuInstalled && !isEnabled) {
         // When DSU is installed, show a simpler card with preserve option
         CardBox(
