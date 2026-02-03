@@ -353,7 +353,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onClickUpdateDsu() {
-        _uiState.update { it.copy(isUpdatingDsu = true) }
+        // Only allow update flow if DSU is actually installed
+        if (_uiState.value.isDsuInstalled) {
+            _uiState.update { it.copy(isUpdatingDsu = true) }
+        }
     }
 
     fun onClickDiscardGsiAndStartInstallation() {
@@ -371,7 +374,15 @@ class HomeViewModel @Inject constructor(
             remove()
             forceStopPackage("com.android.dynsystem")
             dismissSheet()
-            resetInstallationCard()
+            // Reset UI state after discarding DSU
+            _uiState.update { 
+                it.copy(
+                    installationCard = InstallationCardState(),
+                    sheetDisplay = SheetDisplayState.NONE,
+                    isUpdatingDsu = false,
+                    isDsuInstalled = false,
+                ) 
+            }
         }
     }
 
