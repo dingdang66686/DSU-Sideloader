@@ -49,6 +49,7 @@ class DSUInstaller(
     private val onCreatePartition: (partition: String) -> Unit,
     private val onInstallationStepUpdate: (step: InstallationStep) -> Unit,
     private val onInstallationSuccess: () -> Unit,
+    private val preserveUserdata: Boolean = false,
 ) : () -> Unit, DynamicSystemImpl() {
 
     private val tag = this.javaClass.simpleName
@@ -223,13 +224,21 @@ class DSUInstaller(
             onInstallationError(InstallationStep.ERROR_ALREADY_RUNNING_DYN_OS, "")
             return
         }
-        if (isInstalled) {
+        
+        // When preserving userdata, we allow updating an installed DSU
+        if (isInstalled && !preserveUserdata) {
             onInstallationError(InstallationStep.ERROR_REQUIRES_DISCARD_DSU, "")
             return
         }
+        
         forceStopDSU()
         startInstallation(Constants.DEFAULT_SLOT)
-        installWritablePartition("userdata", userdataSize)
+        
+        // Only create userdata partition when preserve is disabled OR DSU is not installed
+        if (!preserveUserdata || !isInstalled) {
+            installWritablePartition("userdata", userdataSize)
+        }
+        
         when (dsuInstallation.type) {
             Type.SINGLE_SYSTEM_IMAGE -> {
                 installImage(

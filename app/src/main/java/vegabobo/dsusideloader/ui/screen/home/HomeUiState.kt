@@ -19,6 +19,7 @@ data class UserDataCardState(
     val isError: Boolean = false,
     val text: String = "",
     val maximumAllowed: Int = 0,
+    val preserveSelected: Boolean = false,
 )
 
 data class ImageSizeCardState(
@@ -54,8 +55,10 @@ data class HomeUiState(
     val installationLogs: String = "",
     val passedInitialChecks: Boolean = false,
     val shouldKeepScreenOn: Boolean = false,
+    val isDsuInstalled: Boolean = false,
 ) {
     fun isInstalling(): Boolean {
-        return installationCard.installationStep != InstallationStep.NOT_INSTALLING
+        return installationCard.installationStep != InstallationStep.NOT_INSTALLING &&
+               installationCard.installationStep != InstallationStep.DSU_ALREADY_INSTALLED
     }
 }

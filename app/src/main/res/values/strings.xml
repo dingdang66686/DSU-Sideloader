@@ -33,6 +33,7 @@
 
     <string name="clear">Clear</string>
     <string name="install">Install</string>
+    <string name="update">Update</string>
 
     <!-- Installation dialog -->
     <string name="proceed_installation">Proceed installation?</string>
@@ -114,6 +115,8 @@
     <string name="userdata_size">Userdata size</string>
     <string name="userdata_size_info">Size in gigabytes</string>
     <string name="allowed_userdata_allocation">Maximum available for allocation: %1$sGB</string>
+    <string name="preserve_userdata">Preserve userdata</string>
+    <string name="preserve_userdata_desc">Keep existing userdata when updating DSU</string>
 
     <!-- Image size card -->
     <string name="image_size">Image size</string>

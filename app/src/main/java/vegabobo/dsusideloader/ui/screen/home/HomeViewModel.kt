@@ -87,8 +87,16 @@ class HomeViewModel @Inject constructor(
 
     fun resetInstallationCard() =
         _uiState.update {
+            // If DSU is installed, restore the DSU_ALREADY_INSTALLED state
+            // instead of resetting to NOT_INSTALLING
+            val installationStep = if (it.isDsuInstalled) {
+                InstallationStep.DSU_ALREADY_INSTALLED
+            } else {
+                InstallationStep.NOT_INSTALLING
+            }
+            
             it.copy(
-                installationCard = InstallationCardState(),
+                installationCard = InstallationCardState(installationStep = installationStep),
                 sheetDisplay = SheetDisplayState.NONE,
             )
         }
@@ -109,6 +117,14 @@ class HomeViewModel @Inject constructor(
                     return@run
                 }
                 if (isInstalled) {
+                    // Track DSU installation status and show update UI
+                    // Set preserve userdata to true by default
+                    _uiState.update { 
+                        it.copy(
+                            isDsuInstalled = true,
+                            userDataCard = it.userDataCard.copy(preserveSelected = true)
+                        ) 
+                    }
                     updateInstallationCard { it.copy(installationStep = InstallationStep.DSU_ALREADY_INSTALLED) }
                     return@run
                 }
@@ -264,6 +280,7 @@ class HomeViewModel @Inject constructor(
             onCreatePartition = this::onCreatePartition,
             onInstallationStepUpdate = this::onStepUpdate,
             onInstallationSuccess = this::onRootInstallationSuccess,
+            preserveUserdata = session.preferences.preserveUserdata,
         ).invoke()
     }
 
@@ -357,7 +374,14 @@ class HomeViewModel @Inject constructor(
             remove()
             forceStopPackage("com.android.dynsystem")
             dismissSheet()
-            resetInstallationCard()
+            // Reset UI state after discarding DSU
+            _uiState.update { 
+                it.copy(
+                    installationCard = InstallationCardState(),
+                    sheetDisplay = SheetDisplayState.NONE,
+                    isDsuInstalled = false,
+                ) 
+            }
         }
     }
 
@@ -389,6 +413,11 @@ class HomeViewModel @Inject constructor(
 
     fun onCheckUserdataCard() =
         updateUserdataCard { it.copy(isSelected = !it.isSelected, text = "") }
+
+    fun onCheckPreserveUserdata(checked: Boolean) {
+        updateUserdataCard { it.copy(preserveSelected = checked) }
+        session.preferences.preserveUserdata = checked
+    }
 
     fun updateUserdataSize(input: String) {
         val selectedSize = FilenameUtils.getDigits(input)

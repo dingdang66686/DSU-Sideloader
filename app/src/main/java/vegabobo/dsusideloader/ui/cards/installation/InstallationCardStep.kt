@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import vegabobo.dsusideloader.R
 import vegabobo.dsusideloader.preparation.InstallationStep
+import vegabobo.dsusideloader.ui.cards.installation.content.DsuInstalledCardContent
 import vegabobo.dsusideloader.ui.cards.installation.content.NotInstallingCardContent
 import vegabobo.dsusideloader.ui.cards.installation.content.ProgressableCardContent
 import vegabobo.dsusideloader.ui.screen.home.InstallationCardState
@@ -35,12 +36,13 @@ fun InstallationCardStep(
                 onClickInstall = onClickInstall,
             )
         InstallationStep.DSU_ALREADY_INSTALLED ->
-            ProgressableCardContent(
-                text = stringResource(R.string.dsu_already_installed),
-                textFirstButton = stringResource(id = R.string.reboot_into_dsu),
-                onClickFirstButton = onClickRebootToDynOS,
-                textSecondButton = stringResource(id = R.string.discard),
-                onClickSecondButton = onClickDiscardDsu,
+            DsuInstalledCardContent(
+                textFieldInteraction = textFieldInteraction,
+                uiState = uiState,
+                onClickClear = onClickClear,
+                onClickInstall = onClickInstall,
+                onClickRebootToDynOS = onClickRebootToDynOS,
+                onClickDiscardDsu = onClickDiscardDsu,
             )
         InstallationStep.DSU_ALREADY_RUNNING_DYN_OS ->
             ProgressableCardContent(
