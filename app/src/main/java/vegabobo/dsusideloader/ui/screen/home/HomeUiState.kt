@@ -56,9 +56,9 @@ data class HomeUiState(
     val passedInitialChecks: Boolean = false,
     val shouldKeepScreenOn: Boolean = false,
     val isDsuInstalled: Boolean = false,
-    val isUpdatingDsu: Boolean = false,
 ) {
     fun isInstalling(): Boolean {
-        return installationCard.installationStep != InstallationStep.NOT_INSTALLING
+        return installationCard.installationStep != InstallationStep.NOT_INSTALLING &&
+               installationCard.installationStep != InstallationStep.DSU_ALREADY_INSTALLED
     }
 }

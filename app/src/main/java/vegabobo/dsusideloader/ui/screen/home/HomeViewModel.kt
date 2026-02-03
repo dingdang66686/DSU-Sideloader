@@ -90,7 +90,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 installationCard = InstallationCardState(),
                 sheetDisplay = SheetDisplayState.NONE,
-                isUpdatingDsu = false,
             )
         }
 
@@ -352,13 +351,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onClickUpdateDsu() {
-        // Only allow update flow if DSU is actually installed
-        if (_uiState.value.isDsuInstalled) {
-            _uiState.update { it.copy(isUpdatingDsu = true) }
-        }
-    }
-
     fun onClickDiscardGsiAndStartInstallation() {
         updateInstallationCard { it.copy(installationStep = InstallationStep.PROCESSING) }
         PrivilegedProvider.run {
@@ -379,7 +371,6 @@ class HomeViewModel @Inject constructor(
                 it.copy(
                     installationCard = InstallationCardState(),
                     sheetDisplay = SheetDisplayState.NONE,
-                    isUpdatingDsu = false,
                     isDsuInstalled = false,
                 ) 
             }

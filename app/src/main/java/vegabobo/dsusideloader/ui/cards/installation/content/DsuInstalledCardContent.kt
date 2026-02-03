@@ -25,8 +25,6 @@ import vegabobo.dsusideloader.ui.screen.home.InstallationCardState
 fun DsuInstalledCardContent(
     textFieldInteraction: MutableInteractionSource,
     uiState: InstallationCardState,
-    isUpdatingDsu: Boolean,
-    onClickUpdate: () -> Unit,
     onClickClear: () -> Unit,
     onClickInstall: () -> Unit,
     onClickRebootToDynOS: () -> Unit,
@@ -40,77 +38,60 @@ fun DsuInstalledCardContent(
         modifier = Modifier.padding(bottom = 8.dp),
     )
     
-    if (!isUpdatingDsu) {
-        // Show three action buttons when not updating
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Spacer(modifier = Modifier.weight(1F))
-                PrimaryButton(
-                    text = stringResource(R.string.update),
-                    onClick = onClickUpdate,
-                )
-            }
-            
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-            
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Spacer(modifier = Modifier.weight(1F))
-                SecondaryButton(
-                    text = stringResource(id = R.string.reboot_into_dsu),
-                    onClick = onClickRebootToDynOS,
-                )
-                Spacer(modifier = Modifier.padding(end = 6.dp))
-                ErrorButton(
-                    text = stringResource(id = R.string.discard),
-                    onClick = onClickDiscardDsu,
-                )
-            }
-        }
-    } else {
-        // Show file selection and install button when updating
-        FileSelectionBox(
-            textFieldInteraction = textFieldInteraction,
-            isEnabled = uiState.isTextFieldEnabled,
-            isError = uiState.isError,
-            isReadOnly = true,
-            textFieldValue = uiState.text,
-            textFieldTitle = stringResource(id = R.string.select_gsi_info),
-        )
-        Spacer(modifier = Modifier.padding(top = 10.dp))
-        
-        // Error message if file is unsupported
+    // File selection box (same as NotInstallingCardContent)
+    FileSelectionBox(
+        textFieldInteraction = textFieldInteraction,
+        isEnabled = uiState.isTextFieldEnabled,
+        isError = uiState.isError,
+        isReadOnly = true,
+        textFieldValue = uiState.text,
+        textFieldTitle = stringResource(id = R.string.select_gsi_info),
+    )
+    Spacer(modifier = Modifier.padding(top = 10.dp))
+    
+    // Install/Clear buttons row
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
         AnimatedVisibility(visible = uiState.isError) {
             Text(
                 text = stringResource(id = R.string.file_unsupported),
-                modifier = Modifier.padding(start = 2.dp, bottom = 8.dp),
+                modifier = Modifier.padding(start = 2.dp),
                 color = MaterialTheme.colorScheme.error,
             )
         }
-        
-        // Install/Clear buttons
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Spacer(modifier = Modifier.weight(1F))
-            if (uiState.isInstallable) {
-                SecondaryButton(
-                    text = stringResource(R.string.clear),
-                    onClick = onClickClear,
-                )
-                Spacer(modifier = Modifier.padding(end = 6.dp))
-            }
-            PrimaryButton(
-                text = stringResource(R.string.install),
-                onClick = onClickInstall,
-                isEnabled = uiState.isInstallable,
+        Spacer(modifier = Modifier.weight(1F))
+        if (uiState.isInstallable) {
+            SecondaryButton(
+                text = stringResource(R.string.clear),
+                onClick = onClickClear,
             )
+            Spacer(modifier = Modifier.padding(end = 6.dp))
         }
+        PrimaryButton(
+            text = stringResource(R.string.install),
+            onClick = onClickInstall,
+            isEnabled = uiState.isInstallable,
+        )
+    }
+    
+    Spacer(modifier = Modifier.padding(top = 8.dp))
+    
+    // Reboot and Discard buttons row
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Spacer(modifier = Modifier.weight(1F))
+        SecondaryButton(
+            text = stringResource(id = R.string.reboot_into_dsu),
+            onClick = onClickRebootToDynOS,
+        )
+        Spacer(modifier = Modifier.padding(end = 6.dp))
+        ErrorButton(
+            text = stringResource(id = R.string.discard),
+            onClick = onClickDiscardDsu,
+        )
     }
 }
