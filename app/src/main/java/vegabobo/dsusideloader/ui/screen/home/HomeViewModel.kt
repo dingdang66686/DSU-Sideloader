@@ -87,8 +87,16 @@ class HomeViewModel @Inject constructor(
 
     fun resetInstallationCard() =
         _uiState.update {
+            // If DSU is installed, restore the DSU_ALREADY_INSTALLED state
+            // instead of resetting to NOT_INSTALLING
+            val installationStep = if (it.isDsuInstalled) {
+                InstallationStep.DSU_ALREADY_INSTALLED
+            } else {
+                InstallationStep.NOT_INSTALLING
+            }
+            
             it.copy(
-                installationCard = InstallationCardState(),
+                installationCard = InstallationCardState(installationStep = installationStep),
                 sheetDisplay = SheetDisplayState.NONE,
             )
         }
