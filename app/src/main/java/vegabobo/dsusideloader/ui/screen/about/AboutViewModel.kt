@@ -88,32 +88,41 @@ class AboutViewModel @Inject constructor(
         updateUpdaterCard { it.copy(isDownloading = true) }
         viewModelScope.launch(Dispatchers.IO) {
             val finalFile = File(application.filesDir.path + "/update.apk")
+            
+            // Delete old APK file if exists
+            if (finalFile.exists()) {
+                finalFile.delete()
+            }
+            
             val length = try {
                 URL(response.apkUrl).openConnection().contentLengthLong
             } catch (e: Exception) {
+                Log.e(tag, "Failed to get content length", e)
                 updateUpdaterCard { it.copy(isDownloading = false) }
                 return@launch
             }
-            val input = try {
-                URL(response.apkUrl).openStream()
+            
+            try {
+                URL(response.apkUrl).openStream().use { input ->
+                    FileOutputStream(finalFile).use { output ->
+                        val buffer = ByteArray(8 * 1024)
+                        var n: Int
+                        var bytesRead: Long = 0
+                        while (-1 != input.read(buffer).also { n = it }) {
+                            bytesRead += n
+                            output.write(buffer, 0, n)
+                            updateUpdaterCard { it.copy(progressBar = bytesRead.toFloat() / length.toFloat()) }
+                        }
+                    }
+                }
             } catch (e: Exception) {
+                Log.e(tag, "Failed to download update", e)
                 updateUpdaterCard { it.copy(isDownloading = false) }
+                if (finalFile.exists()) {
+                    finalFile.delete()
+                }
                 return@launch
             }
-            val output = FileOutputStream(finalFile)
-
-            val buffer = ByteArray(8 * 1024)
-            var n: Int
-            var readed: Long = 0
-            while (-1 != input.read(buffer)
-                    .also { n = it }
-            ) {
-                readed += buffer.size
-                output.write(buffer, 0, n)
-                updateUpdaterCard { it.copy(progressBar = readed.toFloat() / length.toFloat()) }
-            }
-            input.close()
-            output.close()
 
             updateUpdaterCard { it.copy(isDownloading = false) }
             val apkUri = FileProvider.getUriForFile(
