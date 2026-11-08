@@ -48,7 +48,13 @@ class HomeViewModel @Inject constructor(
 
     private val tag = this.javaClass.simpleName
 
-    private val _uiState = MutableStateFlow(HomeUiState())
+    private val _uiState = MutableStateFlow(
+        HomeUiState(
+            userDataCard = UserDataCardState(
+                preserveSelected = session.preferences.preserveUserdata,
+            ),
+        ),
+    )
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     var checkDynamicPartitions = true
@@ -118,11 +124,9 @@ class HomeViewModel @Inject constructor(
                 }
                 if (isInstalled) {
                     // Track DSU installation status and show update UI
-                    // Set preserve userdata to true by default
                     _uiState.update { 
                         it.copy(
                             isDsuInstalled = true,
-                            userDataCard = it.userDataCard.copy(preserveSelected = true)
                         ) 
                     }
                     updateInstallationCard { it.copy(installationStep = InstallationStep.DSU_ALREADY_INSTALLED) }
