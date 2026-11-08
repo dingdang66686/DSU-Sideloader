@@ -152,7 +152,12 @@ fun Home(
         SheetDisplayState.CONFIRM_INSTALLATION ->
             ConfirmInstallationSheet(
                 filename = homeViewModel.obtainSelectedFilename(),
-                userdata = homeViewModel.session.userSelection.getUserDataSizeAsGB(),
+                userdata = if (homeViewModel.session.preferences.preserveUserdata) {
+                    null
+                } else {
+                    homeViewModel.session.userSelection.getUserDataSizeAsGB()
+                },
+                preserveUserdata = homeViewModel.session.preferences.preserveUserdata,
                 fileSize = homeViewModel.session.userSelection.userSelectedImageSize,
                 onClickConfirm = { homeViewModel.onConfirmInstallationSheet() },
                 onClickCancel = { homeViewModel.dismissSheet() },

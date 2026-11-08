@@ -91,6 +91,9 @@
     <string name="preserve_userdata">保留用户数据</string>
     <string name="preserve_userdata_desc">更新 DSU 时保留现有用户数据</string>
     <string name="preserve_userdata_unavailable">仅在 Root 且启用内置安装器时可用</string>
+    <string name="userdata_preservation">用户数据分区</string>
+    <string name="userdata_preserved">保留现有用户数据</string>
+    <string name="userdata_not_preserved">将分配新的用户数据分区</string>
     <!-- Image size card -->
     <string name="image_size">DSU 镜像大小</string>
     <string name="image_size_info">单位：Bytes</string>

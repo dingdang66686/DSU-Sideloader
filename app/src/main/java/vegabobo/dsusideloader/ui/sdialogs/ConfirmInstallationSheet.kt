@@ -20,7 +20,8 @@ import vegabobo.dsusideloader.ui.components.DialogLikeBottomSheet
 @Composable
 fun ConfirmInstallationSheet(
     filename: String,
-    userdata: String,
+    userdata: String?,
+    preserveUserdata: Boolean,
     fileSize: Long,
     onClickConfirm: () -> Unit,
     onClickCancel: () -> Unit,
@@ -37,10 +38,24 @@ fun ConfirmInstallationSheet(
                 text = filename,
                 textColor = MaterialTheme.colorScheme.onBackground,
             )
+            if (userdata != null) {
+                DialogItem(
+                    icon = Icons.Outlined.Storage,
+                    title = "${stringResource(id = R.string.userdata_size)}:",
+                    text = "${userdata}GB",
+                    textColor = MaterialTheme.colorScheme.onBackground,
+                )
+            }
             DialogItem(
                 icon = Icons.Outlined.Storage,
-                title = "${stringResource(id = R.string.userdata_size)}:",
-                text = "${userdata}GB",
+                title = "${stringResource(id = R.string.userdata_preservation)}:",
+                text = stringResource(
+                    id = if (preserveUserdata) {
+                        R.string.userdata_preserved
+                    } else {
+                        R.string.userdata_not_preserved
+                    },
+                ),
                 textColor = MaterialTheme.colorScheme.onBackground,
             )
             if (fileSize != DSUConstants.DEFAULT_IMAGE_SIZE) {
