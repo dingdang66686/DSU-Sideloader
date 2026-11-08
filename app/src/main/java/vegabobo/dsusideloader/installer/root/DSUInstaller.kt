@@ -53,6 +53,7 @@ class DSUInstaller(
 ) : () -> Unit, DynamicSystemImpl() {
 
     private val tag = this.javaClass.simpleName
+    private var preservingInstalledDsu = false
 
     object Constants {
         const val DEFAULT_SLOT = "dsu"
@@ -225,6 +226,8 @@ class DSUInstaller(
             return
         }
         
+        preservingInstalledDsu = isInstalled && preserveUserdata
+
         // When preserving userdata, we allow updating an installed DSU
         if (isInstalled && !preserveUserdata) {
             onInstallationError(InstallationStep.ERROR_REQUIRES_DISCARD_DSU, "")
@@ -263,11 +266,14 @@ class DSUInstaller(
 
             else -> {}
         }
-        if (!installationJob.isCancelled) {
-            finishInstallation()
-            Log.d(tag, "Installation finished successfully.")
-            onInstallationSuccess()
+        if (installationJob.isCancelled) {
+            cancelInstallation()
+            return
         }
+
+        finishInstallation()
+        Log.d(tag, "Installation finished successfully.")
+        onInstallationSuccess()
     }
 
     private fun installImages(images: List<ImagePartition>) {
@@ -276,7 +282,7 @@ class DSUInstaller(
                 installImage(image.partitionName, image.fileSize, image.uri)
             }
             if (installationJob.isCancelled) {
-                remove()
+                return
             }
         }
     }
@@ -287,7 +293,12 @@ class DSUInstaller(
             uncompressedSize,
             openInputStream(uri),
         )
-        if (installationJob.isCancelled) {
+    }
+
+    private fun cancelInstallation() {
+        if (preservingInstalledDsu) {
+            abort()
+        } else {
             remove()
         }
     }
