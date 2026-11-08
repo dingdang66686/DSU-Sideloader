@@ -25,6 +25,7 @@ fun UserdataCard(
     isEnabled: Boolean,
     uiState: UserDataCardState,
     isDsuInstalled: Boolean,
+    isPreserveEnabled: Boolean = true,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     onCheckedChange: (Boolean) -> Unit = {},
@@ -44,11 +45,17 @@ fun UserdataCard(
                 // Preserve userdata toggle (default: ON)
                 PreferenceItem(
                     title = stringResource(id = R.string.preserve_userdata),
-                    description = stringResource(id = R.string.preserve_userdata_desc),
+                    description = stringResource(
+                        id = if (isPreserveEnabled) {
+                            R.string.preserve_userdata_desc
+                        } else {
+                            R.string.preserve_userdata_unavailable
+                        },
+                    ),
                     showToggle = true,
                     isChecked = uiState.preserveSelected,
-                    isEnabled = !isEnabled,
-                    onClick = { onPreserveCheckedChange(!uiState.preserveSelected) }
+                    isEnabled = !isEnabled && isPreserveEnabled,
+                    onClick = { onPreserveCheckedChange(!uiState.preserveSelected) },
                 )
                 
                 // Show userdata size input only when preserve is OFF

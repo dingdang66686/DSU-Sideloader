@@ -114,6 +114,23 @@ class HomeViewModel @Inject constructor(
     //
 
     init {
+        viewModelScope.launch {
+            val canPreserveUserdata =
+                session.isRoot() && readBoolPref(AppPrefs.USE_BUILTIN_INSTALLER)
+            if (!canPreserveUserdata) {
+                session.preferences.preserveUserdata = false
+            }
+            _uiState.update {
+                it.copy(
+                    canPreserveUserdata = canPreserveUserdata,
+                    userDataCard = it.userDataCard.copy(
+                        preserveSelected =
+                        canPreserveUserdata && session.preferences.preserveUserdata,
+                    ),
+                )
+            }
+        }
+
         // Check if a DSU is already installed
         // Root-only because MANAGE_DYNAMIC_SYSTEM is required
         if (session.isRoot()) {
@@ -419,6 +436,9 @@ class HomeViewModel @Inject constructor(
         updateUserdataCard { it.copy(isSelected = !it.isSelected, text = "") }
 
     fun onCheckPreserveUserdata(checked: Boolean) {
+        if (!uiState.value.canPreserveUserdata) {
+            return
+        }
         updateUserdataCard { it.copy(preserveSelected = checked) }
         session.preferences.preserveUserdata = checked
     }

@@ -117,6 +117,7 @@
     <string name="allowed_userdata_allocation">Maximum available for allocation: %1$sGB</string>
     <string name="preserve_userdata">Preserve userdata</string>
     <string name="preserve_userdata_desc">Keep existing userdata when updating DSU</string>
+    <string name="preserve_userdata_unavailable">Only available with root and the built-in installer</string>
 
     <!-- Image size card -->
     <string name="image_size">Image size</string>

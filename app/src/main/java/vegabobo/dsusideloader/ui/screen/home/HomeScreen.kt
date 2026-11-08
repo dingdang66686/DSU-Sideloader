@@ -129,6 +129,7 @@ fun Home(
                     isEnabled = uiState.isInstalling(),
                     uiState = uiState.userDataCard,
                     isDsuInstalled = uiState.isDsuInstalled,
+                    isPreserveEnabled = uiState.canPreserveUserdata,
                     onCheckedChange = { homeViewModel.onCheckUserdataCard() },
                     onValueChange = { homeViewModel.updateUserdataSize(it) },
                     onPreserveCheckedChange = { homeViewModel.onCheckPreserveUserdata(it) },
