@@ -70,7 +70,7 @@ fun DsuInstalledCardContent(
             Spacer(modifier = Modifier.padding(end = 6.dp))
         }
         PrimaryButton(
-            text = stringResource(R.string.install),
+            text = stringResource(R.string.update),
             onClick = onClickInstall,
             isEnabled = uiState.isInstallable,
         )

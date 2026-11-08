@@ -382,6 +382,8 @@ class HomeViewModel @Inject constructor(
 
     fun onClickDiscardGsiAndStartInstallation() {
         updateInstallationCard { it.copy(installationStep = InstallationStep.PROCESSING) }
+        session.preferences.preserveUserdata = false
+        updateUserdataCard { it.copy(preserveSelected = false) }
         PrivilegedProvider.run {
             remove()
             forceStopPackage("com.android.dynsystem")
@@ -395,12 +397,16 @@ class HomeViewModel @Inject constructor(
             remove()
             forceStopPackage("com.android.dynsystem")
             dismissSheet()
+            session.preferences.preserveUserdata = false
             // Reset UI state after discarding DSU
             _uiState.update { 
                 it.copy(
                     installationCard = InstallationCardState(),
                     sheetDisplay = SheetDisplayState.NONE,
                     isDsuInstalled = false,
+                    userDataCard = it.userDataCard.copy(
+                        preserveSelected = false,
+                    ),
                 ) 
             }
         }
